@@ -1,6 +1,8 @@
 /* JS file for D3-Lab by Bob Cowling, 2017 */
 
 (function(){
+
+    
 //pseudo-global variables
 var attrArray = ["BREW_PER_CAPITA", "NUM_OF_BREWIES", "PRODUCTION_PER_CAPITA", "BARRELS_PRODUCED", "ECONOMIC_IMPACT", "IMPACT_PER_CAPITA", "RANK"]; //list of attributes
 var expressed = attrArray[0]; //initial attribute
@@ -15,26 +17,37 @@ var chartWidth = window.innerWidth * 0.425,
     chartInnerWidth = chartWidth - leftPadding - rightPadding,
     chartInnerHeight = chartHeight - topBottomPadding * 2,
     translate = "translate(" + leftPadding + "," + topBottomPadding + ")";
+
+//create a title for each attribute
+var t_brewpercapita = "Breweries Per Capita";
+var t_numofbreweries = "Number of Breweries";
+var t_productionpercapita = "Beer Production Per Capita";
+var t_barrelsproduced = "Barrels Produced";
+var t_economicimpact = "Economic Impact";    
+var t_impactpercapita = "Economic Impact Per Capita";    
     
-//create a scale to size bars proportionally to frame and for axis
 var yScale = d3.scaleLinear()
-    //.range([463, 0])
-    //.domain([0, 9.4]);     
+    .range([463, 0])
+    .domain([0, 10]);     
     
 window.onload = setMap();
 //set up choropleth map
-function setMap(){
+function setMap(){   
+      
     
     //map frame dimensions
     var width = window.innerWidth * 0.5,
         height = 460;
 
     //create new svg container for the map
-    var map = d3.select("body")
+    var map = d3.select("#mapContainer")
         .append("svg")
         .attr("class", "map")
         .attr("width", width)
-        .attr("height", height);
+        .attr("height", height);    
+  
+    
+
     //create Albers equal area conic projection centered on the United States
     var projection = d3.geoAlbersUsa()
         .scale(1000)
@@ -66,7 +79,6 @@ function setMap(){
         //add the dropdown menu to the map
         createDropdown(csvData);
         
-        
     };
     
         
@@ -79,11 +91,11 @@ function joinData(usStates, csvData){
     //loop through csv to assign each set of csv attribute values to geojson region
     for (var i=0; i<csvData.length; i++){
         var csvState = csvData[i]; //the current us state
-        var csvKey = csvState.STATE_NAME; //the CSV primary key
+        var csvKey = csvState.STATE_ABBR; //the CSV primary key
         //loop through geojson regions to find correct region
         for (var a=0; a<usStates.length; a++){
             var geojsonProps = usStates[a].properties; //the current region geojson properties
-            var geojsonKey = geojsonProps.STATE_NAME; //the geojson primary key
+            var geojsonKey = geojsonProps.STATE_ABBR; //the geojson primary key
             //where primary keys match, transfer csv data to geojson properties object
             if (geojsonKey == csvKey){
                 //assign all attributes and values
@@ -107,7 +119,7 @@ function setEnumerationUnits(usStates, map, path, colorScale){
             .append("path")
             .attr("class", function(d){
                 //return ".addstates"
-                return "addstates " + d.properties.STATE_NAME;
+                return "addstates " + d.properties.STATE_ABBR;
             })
             .attr("d", path)
            .style("fill", function(d){
@@ -132,22 +144,28 @@ function setEnumerationUnits(usStates, map, path, colorScale){
  //Example 1.4 line 11...function to create color scale generator
 function makeColorScale(data){
     var colorClasses = [
-        "#D4B9DA",
-        "#C994C7",
-        "#DF65B0",
-        "#DD1C77",
-        "#980043"
-    ];
-    //create color scale generator
+        "#FFFFD4",
+        "#FEE391",
+        "#FEC44F",
+        "#FE9929",
+        "#D95F0E",
+        "#993404"
+        ];
+    
+  //create color scale generator
     var colorScale = d3.scaleQuantile()
         .range(colorClasses);
-    //build two-value array of minimum and maximum expressed attribute values
-    var minmax = [
-        d3.min(data, function(d) { return parseFloat(d[expressed]); }),
-        d3.max(data, function(d) { return parseFloat(d[expressed]); })
-    ];
-    //assign two-value array as scale domain
-    colorScale.domain(minmax);
+
+    //build array of all values of the expressed attribute
+    var domainArray = [];
+    for (var i=0; i<data.length; i++){
+        var val = parseFloat(data[i][expressed]);
+        domainArray.push(val);
+    };
+
+    //assign array of expressed values as scale domain
+    colorScale.domain(domainArray);
+
     return colorScale;
 };
     
@@ -164,11 +182,10 @@ function choropleth(props, colorScale){
 };
 
 //function to create coordinated bar chart
-//function to create coordinated bar chart
 function setChart(csvData, colorScale){
    
     //create a second svg element to hold the bar chart
-    var chart = d3.select("body")
+    var chart = d3.select("#chart")
         .append("svg")
         .attr("width", chartWidth)
         .attr("height", chartHeight)
@@ -191,7 +208,7 @@ function setChart(csvData, colorScale){
             return b[expressed]-a[expressed]
         })
         .attr("class", function(d){
-            return "bar " + d.STATE_NAME;
+            return "bar " + d.STATE_ABBR;
         })
         .attr("width", chartInnerWidth / csvData.length - 1)
         .on("mouseover", highlight)
@@ -251,22 +268,54 @@ function createDropdown(csvData){
         .enter()
         .append("option")
         .attr("value", function(d){ return d })
-        .text(function(d){ return d });
+        .text(function(d){
+            if (d == attrArray[0]) {
+				d = t_brewpercapita;
+			} else if (d == attrArray[1]) {
+				d = t_numofbreweries;
+			} else if (d == attrArray[2]) {
+				d = t_productionpercapita;
+			} else if (d == attrArray[3]) {
+				d = t_barrelsproduced;
+			} else if (d == attrArray[5]) {
+				d = t_impactpercapita;
+			} else if (d == attrArray[4]) {
+				d = t_economicimpact;
+			};
+			return d;
+		});
 };
     
 //dropdown change listener handler
 function changeAttribute(attribute, csvData){
     //change the expressed attribute
     expressed = attribute;
-
+    
+    
     // Get the max value for the selected attribute
     var max = d3.max(csvData,function(d){
         return +d[expressed];});
+    
+    ;
+   
    
 // yScale is a global variable - just set the domain to 0 and the max value you found. Adjust if needed.
+   
+        if (expressed == attrArray[1]){
+         yScale = d3.scaleLinear()
+            .range([463,0])    
+            .domain([0,max + 32]);            
+        } else if (expressed == attrArray[5]){  
+            yScale = d3.scaleLinear()
+                .range([463,0]) 
+                .domain([0,max + 91]);
+        } else {
+    
     yScale = d3.scaleLinear()
-        .range([463,0])
-        .domain([0,max]);    
+                .range([463,0]) 
+                .domain([0,Math.ceil(max)]);
+            
+        }
     
     //recreate the color scale
     var colorScale = makeColorScale(csvData);
@@ -307,6 +356,7 @@ function changeAttribute(attribute, csvData){
         });
     
      updateChart(bars, csvData.length, colorScale);
+     
 };
     
 //function to position, size, and color bars in chart
@@ -329,12 +379,21 @@ function updateChart(bars, n, colorScale){
     
      var chartTitle = d3.select(".chartTitle")
         .text(expressed + " in each state");
+    
+    //copied from setChart, don't delete the original
+    var yAxis = d3.axisLeft()
+        .scale(yScale)
+    //update the charts axis    
+    d3.selectAll("g.axis")
+    .call(yAxis);   
+    
+    
 };
 
  //function to highlight enumeration units and bars
 function highlight(props){
     //change stroke
-    var selected = d3.selectAll("." + props.STATE_NAME)
+    var selected = d3.selectAll("." + props.STATE_ABBR)
         .style("stroke", "blue")
         .style("stroke-width", "2");
          setLabel(props);
@@ -342,7 +401,7 @@ function highlight(props){
 
 //function to reset the element style on mouseout
 function dehighlight(props){
-    var selected = d3.selectAll("." + props.STATE_NAME)
+    var selected = d3.selectAll("." + props.STATE_ABBR)
         .style("stroke", function(){
             return getStyle(this, "stroke")
         })
@@ -377,12 +436,12 @@ function setLabel(props){
     var infolabel = d3.select("body")
         .append("div")
         .attr("class", "infolabel")
-        .attr("FID", props.STATE_NAME + "_label")
+        .attr("FID", props.STATE_ABBR + "_label")
         .html(labelAttribute);
 
     var stateName = infolabel.append("div")
         .attr("class", "labelname")
-        .html(props.STATE_NAME);
+        .html(props.STATE_ABBR);
 };    
     
 //function to move info label with mouse
@@ -408,5 +467,7 @@ function moveLabel(){
         .style("left", x + "px")
         .style("top", y + "px");
 
-};    
+};   
+    
+    
 })();    
