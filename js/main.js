@@ -4,7 +4,7 @@
 
     
 //pseudo-global variables
-var attrArray = ["BREW_PER_CAPITA", "NUM_OF_BREWIES", "PRODUCTION_PER_CAPITA", "BARRELS_PRODUCED", "ECONOMIC_IMPACT", "IMPACT_PER_CAPITA", "RANK"]; //list of attributes
+var attrArray = ["BREW_PER_CAPITA", "NUM_OF_BREWIES", "PRODUCTION_PER_CAPITA", "BARRELS_PRODUCED", "ECONOMIC_IMPACT", "IMPACT_PER_CAPITA"]; //list of attributes
 var expressed = attrArray[0]; //initial attribute
 //begin script when window loads
     
@@ -79,6 +79,53 @@ function setMap(){
         //add the dropdown menu to the map
         createDropdown(csvData);
         
+        
+        
+var width = 960, height = 500;
+
+var data = [{label: "cities",     x: width / 16, y: height / 12 }];
+            
+
+var svg = d3.select('body').append('svg')
+    .attr('width', width)
+    .attr('height', height);
+
+var button = d3.button()
+    .on('press', function(d, i) { //load cities data
+        d3.csv("data/beercities.csv", function(data) {
+    
+//create prop symbols for cities data
+
+map.selectAll("circle")
+	.data(data)
+	.enter()
+	.append("circle")
+	.attr("cx", function(d) {
+		return projection([d.Longitude, d.Latitude])[0];
+	})
+	.attr("cy", function(d) {
+		return projection([d.Longitude, d.Latitude])[1];
+	})
+	.attr("r", function(d) {
+		return Math.sqrt(d.Rank) * 8;
+	})
+		.style("fill", "rgb(245,72,24)")	
+		.style("opacity", 0.7)
+        .style("stroke", "black");    
+    });
+        })
+    .on('release', function(d, i) { d3.selectAll("circle")
+        .remove();});
+
+// Add buttons
+var button = svg.selectAll('.button')
+    .data(data)
+  .enter()
+    .append('g')
+    .attr('class', 'button')
+    .call(button);
+        
+   
     };
     
         
@@ -190,6 +237,20 @@ function setChart(csvData, colorScale){
         .attr("width", chartWidth)
         .attr("height", chartHeight)
         .attr("class", "chart");
+    
+    //create a second svg element to hold the bar chart
+    var infoBlock = d3.select("#chart")
+        .append("svg")
+        .attr("width", 100)
+        .attr("height", 50)
+        .attr("class", "infoBlock");
+    
+    //create a background fill for the infoWindow
+    var infoBackground = chart.append("rect")
+        .attr("class", "chartBackground")
+        .attr("width", 500)
+        .attr("height", 200)
+        .attr("transform", translate);
 
     //create a rectangle for chart background fill
     var chartBackground = chart.append("rect")
@@ -222,7 +283,13 @@ function setChart(csvData, colorScale){
    var chartTitle = chart.append("text")
         .attr("x", 40)
         .attr("y", 40)
-        .attr("class", "chartTitle");      
+        .attr("class", "chartTitle");    
+    
+//createtext for the infoWindow
+    var infoWindow = infoBlock.append("text")
+    .attr("x", 90)
+    .attr("y", 90)
+    .attr("class", "infoWindow");
 
     //create vertical axis generator
     var yAxis = d3.axisLeft()
@@ -376,9 +443,21 @@ function updateChart(bars, n, colorScale){
         .style("fill", function(d){
             return choropleth(d, colorScale);
         });    
+    if (expressed == attrArray[0]) {    
+        var chartTitle = d3.select(".chartTitle")
+            .text("Number of " + t_brewpercapita + " in each state");
+    } else if (expressed == attrArray[1]) {
+        var chartTitle = d3.select(".chartTitle")    
+            .text(t_numofbreweries + " in each state");
+    } else if (expressed == AttrArray[2]) {
+        var chartTitle = d3.select(".chartTitle")    
+            .text(t_productionpercapita + " in each state");
+    } else if (expressed == AttrArray[3]) {
+        var chartTitle = d3.select(".chartTitle")    
+            .text("Number of " + t_barrelsproduced + " in each state");
+    };
     
-     var chartTitle = d3.select(".chartTitle")
-        .text(expressed + " in each state");
+    
     
     //copied from setChart, don't delete the original
     var yAxis = d3.axisLeft()
@@ -468,6 +547,7 @@ function moveLabel(){
         .style("top", y + "px");
 
 };   
-    
+
+
     
 })();    

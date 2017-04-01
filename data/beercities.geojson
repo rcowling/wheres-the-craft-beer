@@ -1,0 +1,155 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "City": "Hartford",
+        "PERCENTSOLD": 25.5,
+        "Rank": 10
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -72.6851,
+          41.7637
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "City": "Columbus",
+        "PERCENTSOLD": 25.9,
+        "Rank": 9
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -82.9988,
+          39.9612
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "City": "Grand Rapids",
+        "PERCENTSOLD": 26.4,
+        "Rank": 8
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.6681,
+          42.9634
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "City": "Cleveland",
+        "PERCENTSOLD": 29.2,
+        "Rank": 7
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -81.6944,
+          41.4993
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "City": "Washington D.C.",
+        "PERCENTSOLD": 29.5,
+        "Rank": 6
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.0369,
+          38.9072
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "City": "Sacramento",
+        "PERCENTSOLD": 33,
+        "Rank": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -121.4944,
+          38.5816
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "City": "San Francisco",
+        "PERCENTSOLD": 34.7,
+        "Rank": 4
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.4194,
+          37.7749
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "City": "San Diego",
+        "PERCENTSOLD": 34.9,
+        "Rank": 3
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -117.1611,
+          32.7157
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "City": "Seattle",
+        "PERCENTSOLD": 38.2,
+        "Rank": 2
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.3321,
+          47.6062
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "City": "Portland",
+        "PERCENTSOLD": 43.5,
+        "Rank": 1
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.679565,
+          45.512794
+        ]
+      }
+    }
+  ]
+}
