@@ -27,6 +27,13 @@
     font-weight: bold;
 }
 
+.infoWindow {
+    font-family: sans-serif;
+    font-size: 12;
+    font-weight: bold;
+    
+}
+
 .chartBackground {
     fill: rgba(128,128,128,.2);
 }
@@ -121,23 +128,7 @@ h1 {
   fill: #000f2b; /* navy 100% */
 }
 
-.button #gradient-start {
-  stop-color: #999faa; /* navy 40% */
-  stop-opacity: 1;
-}
 
-.button #gradient-stop {
-  stop-color: #4d576b; /* navy 70% */
-  stop-opacity: 1;
-}
-
-.button #gradient-start.active, .button #gradient-start.pressed {
-  stop-color: #4d576b; /* navy 70% */
-}
-
-.button #gradient-stop.active, .button #gradient-stop.pressed {
-  stop-color: #000f2b; /* navy 100% */
-}
 
 .button text {
   font-size: 30px;
@@ -147,4 +138,9 @@ h1 {
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
+}
+
+.infoBackground {
+    margin-left: 100px;
+    color:aqua;
 }
