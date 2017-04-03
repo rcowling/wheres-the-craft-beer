@@ -8,8 +8,7 @@ var attrArray = ["BREW_PER_CAPITA", "NUM_OF_BREWIES", "PRODUCTION_PER_CAPITA", "
 var expressed = attrArray[0]; //initial attribute
 //begin script when window loads
 
-var wordWrap;
-  
+
 //chart frame dimensions
 var chartWidth = window.innerWidth * 0.425,
     chartHeight = 410,
@@ -38,7 +37,7 @@ function setMap(){
       
     
     //map frame dimensions
-    var width = window.innerWidth * 0.5,
+    var width = window.innerWidth * 0.504,
         height = 460;
 
     //create new svg container for the map
@@ -85,7 +84,7 @@ function setMap(){
         
 var width = 960, height = 500;
 
-var data = [{label: "Beer me!",     x: width / 13, y: height / 12 }];
+var data = [{label: "Beer me!",     x: width / 14, y: height / 13 }];
             
 
 var svg = d3.select('body').append('svg')
@@ -148,16 +147,24 @@ map.selectAll("circle")
         .remove();}); 
         
 
+//create a button container
+
+    var buttoncon = d3.select("#button")
+        .append("svg")
+        .attr("class", "buttoncon")
+        .attr("width", 400)
+        .attr("height", 58);            
 // Add buttons
-var button = svg.selectAll('.button')
+var button = buttoncon.selectAll('body')
     .data(data)
-  .enter()
+     .enter()
     .append('g')
     .attr('class', 'button')
     .call(button);
         
    
-    };
+    }
+    
     
         
 }; //end of setMap
@@ -306,12 +313,13 @@ function setChart(csvData, colorScale){
     //create vertical axis generator
     var yAxis = d3.axisLeft()
         .scale(yScale)
+        .tickFormat(d3.format("s"))
         //.orient("left");
 
     //place axis
     var axis = chart.append("g")
         .attr("class", "axis")
-        .attr("transform", translate)
+        .attr("transform", translate)         
         .call(yAxis);
 
     //create frame for chart border
@@ -388,12 +396,18 @@ function changeAttribute(attribute, csvData){
             yScale = d3.scaleLinear()
                 .range([400,0]) 
                 .domain([0,max + 91]);
-        } else {
-    
-    yScale = d3.scaleLinear()
+        } else if (expressed == attrArray[3]){  
+            yScale = d3.scaleLinear()
                 .range([400,0]) 
-                .domain([0,Math.ceil(max)]);
-            
+                .domain([0,max + 440670]);
+        } else if (expressed == attrArray[4]){  
+            yScale = d3.scaleLinear()
+                .range([400,0]) 
+                .domain([0,max + 113]);
+        }  else {    
+            yScale = d3.scaleLinear()
+                .range([400,0]) 
+                .domain([0,Math.ceil(max)]);            
         }
     
     //recreate the color scale
@@ -475,19 +489,30 @@ function updateChart(bars, n, colorScale){
     } else if (expressed == attrArray[5]) {
          var chartTitle = d3.select(".chartTitle")    
             .text(t_impactpercapita + " in each state");
-    }; 
-    
-  
-    
+    };    
   
     
     //copied from setChart, don't delete the original
     var yAxis = d3.axisLeft()
         .scale(yScale)
+         //display short abbreviations for large numbers
+        .tickFormat(function (d) {
+    var array = ['','K','M','G','T','P'];
+    var i=0;
+    while (d >= 1000)
+    {
+        i++;
+        d = d/1000;
+    }
+
+    d = d + array[i];
+
+    return d;})
+
+
     //update the charts axis    
-    d3.selectAll("g.axis")
-    .call(yAxis);   
-    
+    d3.selectAll("g.axis")   
+    .call(yAxis);      
     
 };
 

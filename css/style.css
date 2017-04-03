@@ -13,7 +13,7 @@
 
 .chart {
     float: right;
-    margin: 7px 20px 0 0;
+    margin: 35px 20px 0 0;
 }
 
 .infoWindow {
@@ -50,7 +50,7 @@
 
 .dropdown {
     position: absolute;
-    top: 100px;
+    top: 130px;
     left: 430px;
     z-index: 10;
     font-family: sans-serif;
@@ -71,7 +71,7 @@ option {
     min-width: 100px;
     color: #fff;
     background-color: saddlebrown;
-    opacity: 0.8;
+    opacity: 0.9;
     border: solid thin #fff;
     padding: 5px 10px;
 }
@@ -106,7 +106,9 @@ body {
 }
 
 h1 {
-    color: darkorange
+    color: darkorange;
+    font-weight: bold;    
+    font-family: 'Martel', serif;    
 }
 
 .button rect {
@@ -151,9 +153,8 @@ div.tooltip {
 }
 
 .chartTitle {
-    fill: #F08620;
-    
-    font-family: sans-serif;
+    fill: #F08620;    
+    font-family: 'Martel', serif;
     font-size: 1.5em;
     font-weight: bold;
     
@@ -162,4 +163,13 @@ div.tooltip {
 h2 {
     color: #F08620;
     font-weight: bold;
+    font-family: 'Martel', serif;
+}
+
+p {
+    color: #FFFFD4;
+}
+
+li {
+    color: #FFFFD4;
 }
