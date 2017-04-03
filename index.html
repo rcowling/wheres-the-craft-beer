@@ -14,15 +14,26 @@
 
 	<body>
 		<!--put your initial page content here-->
-        <div id="header"><h1>Where's the Craft Beer?</h1></div>
+        <div id="header"><img src="img/craftbeerbanner.png" alt="craft beer banner" style="width:400px;height:105px;"></div>        
         <div id="chart"></div>
         <div id="mapContainer"></div>
-        <h2>Okay, but wheres the BEST Craft Beer?</h2>
+        <div id="info">
+        <h2>Okay, but which cities produce the MOST craft beer?</h2>
+        <h2>About</h2>
+            <p>Where's the Craft Beer is an interactive map that explores the production of craft beer and craft beer breweries in the United States. The data shows attributes such as how much craft beer each state produces, how many craft breweries are in that state, and the economic impact. Ten different cities that produce a large percentage of craft beer are also included in this map.</p>
+        <h2>Attribute Information</h2>
+        <li>*Breweries Per Capita represents the number of breweries per state per 100,000 21+ Adults.</li>
+        <li>*Production Per Capita respresents the number of barrells of craft beer produced per state per 100,000 21+ adults.</li>
+        <li>*Economic Impact is derived from the total impact of beer brewed by craft brewers as it moves through the three-tier system (breweries,    wholesalers and retailers), as well as all non-beer products like food and merchandise that brewpub restaurants and brewery taprooms sell.</li> 
+        <li>*Impact Per Capita is the state economic contribution per 100,000 21+ adults.</li>      
+        </div>
+        
 		
 		<!--you can also use this space for internal scripts or stylesheets;
 		place these within <script> or <style> tags-->
 
-		<!--put your external script links here-->		
+		<!--put your external script links here-->
+       
         <script type="text/javascript" src="lib/d3.js"></script>
         <script type="text/javascript" src="lib/d3.min.js"></script>
         <script type="text/javascript" src="lib/d3-queue.min.js"></script>
@@ -33,5 +44,7 @@
         <script type="text/javascript" src="lib/d3-geo.js"></script>
         <script type="text/javascript" src="lib/d3.button.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
+         <script src="jquery-3.2.0.min.js"></script>
+       
 	</body>
 </html>

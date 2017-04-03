@@ -12,7 +12,7 @@ var wordWrap;
   
 //chart frame dimensions
 var chartWidth = window.innerWidth * 0.425,
-    chartHeight = 473,
+    chartHeight = 410,
     leftPadding = 25,
     rightPadding = 2,
     topBottomPadding = 5,
@@ -29,7 +29,7 @@ var t_economicimpact = "Economic Impact";
 var t_impactpercapita = "Economic Impact Per Capita";    
     
 var yScale = d3.scaleLinear()
-    .range([463, 0])
+    .range([400, 0])
     .domain([0, 10]);     
     
 window.onload = setMap();
@@ -91,6 +91,12 @@ var data = [{label: "Beer me!",     x: width / 13, y: height / 12 }];
 var svg = d3.select('body').append('svg')
     .attr('width', width)
     .attr('height', height);
+        
+// Append Div for tooltip to SVG
+var div = d3.select("body")
+		    .append("div")   
+    		.attr("class", "tooltip")               
+    		.style("opacity", 0);        
 
 var button = d3.button()
     .on('press', function(d, i) { //load cities data
@@ -113,11 +119,34 @@ map.selectAll("circle")
 	})
 		.style("fill", "rgb(245,72,24)")	
 		.style("opacity", 0.7)
-        .style("stroke", "black");    
+        .style("stroke", "black") 
+        
+        .on("click", function(d) {       
+    	div.transition()        
+      	   .duration(200)      
+           .style("opacity", .9);      
+           div.text(d.City + " " + "Percent Sold: " + d.PERCENTSOLD)
+           .style("left", (d3.event.pageX) + "px")     
+           .style("top", (d3.event.pageY - 28) + "px")
+           .style("fill", "white")
+             
+	})   
+
+    
+    //fade out tooltip on mouse out               
+    .on("mouseout", function(d) {       
+           div.transition()  
+           .duration(500)      
+           .style("opacity", 0)                     
+           
+    
     });
-        })
-    .on('release', function(d, i) { d3.selectAll("circle")
-        .remove();});
+        });
+     })
+        
+        .on('release', function(d, i) { d3.selectAll("circle")
+        .remove();}); 
+        
 
 // Add buttons
 var button = svg.selectAll('.button')
@@ -239,20 +268,7 @@ function setChart(csvData, colorScale){
         .attr("width", chartWidth)
         .attr("height", chartHeight)
         .attr("class", "chart");
-    
-    
-    //create a background fill for the infoWindow
-    //var infoBackground = chart.append("rect")
-      //  .attr("class", "infoBackground")
-    //    .attr("width", 300)
-      //  .attr("height", 150)
-    //    .attr("x", 150)
-      //  .attr("y", 90)
-        //.style("stroke", "white") 
-        //.text("<h1>dfssljkfskfd</h1>")
-        //.attr("transform", translate);
-    
-   
+      
 
     //create a rectangle for chart background fill
     var chartbackground = chart.append("rect")
@@ -287,15 +303,6 @@ function setChart(csvData, colorScale){
         .attr("y", 50)       
         .attr("class", "chartTitle");
     
-    //create a textblock for the info Window
-    var infoWindow = chart.append("text")
-    .style("fill", "white") 
-    .attr("x", 60)
-    .attr("y", 70)  
-    .attr("class", "infoWindow")
-    .text("*per 100,000 21+ adults.");
-        
-
     //create vertical axis generator
     var yAxis = d3.axisLeft()
         .scale(yScale)
@@ -375,16 +382,16 @@ function changeAttribute(attribute, csvData){
    
         if (expressed == attrArray[1]){
          yScale = d3.scaleLinear()
-            .range([463,0])    
+            .range([400,0])    
             .domain([0,max + 32]);            
         } else if (expressed == attrArray[5]){  
             yScale = d3.scaleLinear()
-                .range([463,0]) 
+                .range([400,0]) 
                 .domain([0,max + 91]);
         } else {
     
     yScale = d3.scaleLinear()
-                .range([463,0]) 
+                .range([400,0]) 
                 .domain([0,Math.ceil(max)]);
             
         }
@@ -417,7 +424,7 @@ function changeAttribute(attribute, csvData){
         })
         //resize bars
         .attr("height", function(d, i){
-            return 463 - yScale(parseFloat(d[expressed]));
+            return 400 - yScale(parseFloat(d[expressed]));
         })
         .attr("y", function(d, i){
             return yScale(parseFloat(d[expressed])) + topBottomPadding;
@@ -439,7 +446,7 @@ function updateChart(bars, n, colorScale){
         })
         //size/resize bars
         .attr("height", function(d, i){
-            return 463 - yScale(parseFloat(d[expressed]));
+            return 400 - yScale(parseFloat(d[expressed]));
         })
         .attr("y", function(d, i){
             return yScale(parseFloat(d[expressed])) + topBottomPadding;
@@ -469,6 +476,8 @@ function updateChart(bars, n, colorScale){
          var chartTitle = d3.select(".chartTitle")    
             .text(t_impactpercapita + " in each state");
     }; 
+    
+  
     
   
     
