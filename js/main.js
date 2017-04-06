@@ -51,7 +51,7 @@ function setMap(){
 
     //create Albers equal area conic projection centered on the United States
     var projection = d3.geoAlbersUsa()
-        .scale(1000)
+        .scale(983)
         .translate([width / 2, height / 2]); //Keep these as one-half the <svg> width and height to keep your map centered in the container
     
     var path = d3.geoPath()
@@ -116,8 +116,8 @@ map.selectAll("circle")
 	.attr("r", function(d) {
 		return Math.sqrt(d.Rank) * 8;
 	})
-		.style("fill", "rgb(245,72,24)")	
-		.style("opacity", 0.7)
+		.style("fill", "rgb(255,69,0)")	
+		.style("opacity", 0.8)
         .style("stroke", "black") 
         
         .on("click", function(d) {       
